@@ -1,9 +1,13 @@
 # Paranoid
 # iOS Advanced Spyware Detection Tool
 
+![Paranoid - iOS Spyware Detector](./images/paranoid_logo.png)
+
 **⚠️ IMPORTANT: This tool is specifically designed for iOS devices only. It does not work with Android devices.**
 
 An automated detection script for advanced spyware including Predator, Graphite, and other commercial surveillance tools targeting iOS devices.
+
+**Note:** This is an alpha version that will be expanded to detect other common spyware such as Pegasus and others. This tool is built just for fun and from experience of being frustrated by the number of tools needed to scan an iPhone. Works well with iMazing. Your paranoia will finally be satisfied. This version is explicitly designed for Windows 10/11.
 
 ## 🎯 What This Tool Detects
 
@@ -227,7 +231,7 @@ The tool uses built-in IOC databases, but you can update them by:
 3. Adding new domains, hashes, or process names
 
 ### Version Information
-- **Current Version**: 1.0
+- **Current Version**: Alpha 1.0
 - **iOS Compatibility**: iOS 12.0 - iOS 17.x
 - **Windows Compatibility**: Windows 10/11
 - **Python Requirement**: 3.7+
