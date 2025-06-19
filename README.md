@@ -1,7 +1,7 @@
 # Paranoid
-# iOS Advanced Spyware Detection Tool
+# iOS Advanced Spyware Detection Tool for Windows
 
-![Paranoid - iOS Spyware Detector](./images/paranoid_logo.png)
+![Paranoid - iOS Spyware Detector](./images/paranoid_logo_small.png)
 
 **⚠️ IMPORTANT: This tool is specifically designed for iOS devices only. It does not work with Android devices.**
 
