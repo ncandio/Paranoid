@@ -21,6 +21,12 @@ class AdvancedSpywareDetector:
         self.results = {
             'predator_indicators': [],
             'graphite_indicators': [],
+            'pegasus_indicators': [],
+            'njrat_indicators': [],
+            'remcos_indicators': [],
+            'asyncrat_indicators': [],
+            'darkgate_indicators': [],
+            'anubis_indicators': [],
             'generic_indicators': [],
             'risk_score': 0,
             'timestamp': datetime.now().isoformat()
@@ -58,6 +64,129 @@ class AdvancedSpywareDetector:
             'processes': [
                 'analyticsd',
                 'aggregate'
+            ]
+        }
+        
+        self.pegasus_iocs = {
+            'domains': [
+                'nso-update.com',
+                'pegasus-cdn.net',
+                'bh-cdn.com',
+                'cdn-push-service.com'
+            ],
+            'processes': [
+                'installd.service',
+                'locationd.override',
+                'com.apple.coretelephony.agent'
+            ],
+            'bundle_ids': [
+                'com.apple.private.alloy',
+                'com.apple.itunes.analytics',
+                'com.apple.purplebuddy'
+            ],
+            'file_hashes': [
+                '7e6f0e86b5d1f43f9b917a3b92a97f5c75e462a9b50f2865e0fd52a5b7c79540',
+                'c13bf5d18978e475d5631c800e5b3ca3c9cb3a31731f7d3947ee8375e59976a1'
+            ]
+        }
+        
+        self.njrat_iocs = {
+            'domains': [
+                'njrat-c2.net',
+                'njrhost.ddns.net',
+                'njrat-control.com',
+                'njr4t.duckdns.org'
+            ],
+            'processes': [
+                'wmiprv.exe',
+                'svchost32.exe',
+                'systemservices.exe',
+                'rundll64.exe'
+            ],
+            'file_hashes': [
+                'f1d903251db466d35533c28e3c032b7212aa43c0d6739a6ea5a8f9c342513282',
+                '8b3c5384559a6a4612decb0a730dfa1ce1392dc5003d3f8c766c9c6e10e68b58'
+            ]
+        }
+        
+        self.remcos_iocs = {
+            'domains': [
+                'remcos-server.com',
+                'remcos-panel.net',
+                'remcos-c2.ddns.net',
+                'rem-control.hopto.org'
+            ],
+            'processes': [
+                'remcos.exe',
+                'remcosagent.exe',
+                'winupdate.exe',
+                'msupdate.exe'
+            ],
+            'file_hashes': [
+                '3e1a8e3d72f7632fd9b455a0b6ead4ff386c33f4e0d5f7a5b4e6d0f35658c5b8',
+                'db3eb3a4a048c9e5fb6f2ea3d9a4d70fc87694d67fdff4da71574374b15a5730'
+            ]
+        }
+        
+        self.asyncrat_iocs = {
+            'domains': [
+                'asyncrat-c2.ddns.net',
+                'async-panel.duckdns.org',
+                'asynccontrol.net',
+                'async-srv.hopto.org'
+            ],
+            'processes': [
+                'asyncclient.exe',
+                'asyncrat.exe',
+                'clienttask.exe',
+                'taskservice.exe'
+            ],
+            'file_hashes': [
+                '0af9d81b9b8ed4b3c802068ef1d7b24a28c6ea97efd2c7797b3175d9e161a975',
+                'b7c1a7f24ec0684eaae6f8c65982adcf75c1d5fd7d734853ddfbb8fb87405b7a'
+            ]
+        }
+        
+        self.darkgate_iocs = {
+            'domains': [
+                'darkgate-c2.com',
+                'darkgate-panel.net',
+                'darkgate.ddns.net',
+                'dg-control.hopto.org'
+            ],
+            'processes': [
+                'darkgate.exe',
+                'dg_client.exe',
+                'svcprocess.exe',
+                'windowsupd.exe'
+            ],
+            'file_hashes': [
+                'c98f307a3f78d956c1d42dc6c9f891a280ceac3f76b456a38992d567e95e68a4',
+                '7e93752c5f1c9da26a5ab9c9db584c907e46508295fd5652b5b3e1db2c2fb0d4'
+            ]
+        }
+        
+        self.anubis_iocs = {
+            'domains': [
+                'anubis-c2.com',
+                'anubiscontrol.net',
+                'anubis-panel.ddns.net',
+                'anubis-srv.duckdns.org'
+            ],
+            'processes': [
+                'anubis.exe',
+                'anubisd.exe',
+                'anubisservice.exe',
+                'securityservice.exe'
+            ],
+            'bundle_ids': [
+                'com.security.anubis',
+                'com.mobile.banking.anubis',
+                'com.anubis.service'
+            ],
+            'file_hashes': [
+                '5e84db69239eb46a5a3cf00ba530e517adc1912ede299b8d7ae434fef06d2faf',
+                'e32b29c89fe01a2ef5eaa361ab0d6fe8e48a966afaea271e29ac8d3a10783b39'
             ]
         }
 
@@ -144,6 +273,72 @@ class AdvancedSpywareDetector:
                     })
                     self.results['risk_score'] += 10
                     
+            # Check for Pegasus domains
+            for domain in self.pegasus_iocs['domains']:
+                if domain in content:
+                    self.results['pegasus_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 20
+                    
+            # Check for NJRat domains
+            for domain in self.njrat_iocs['domains']:
+                if domain in content:
+                    self.results['njrat_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 15
+            
+            # Check for Remcos domains
+            for domain in self.remcos_iocs['domains']:
+                if domain in content:
+                    self.results['remcos_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 15
+            
+            # Check for AsyncRAT domains
+            for domain in self.asyncrat_iocs['domains']:
+                if domain in content:
+                    self.results['asyncrat_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 15
+            
+            # Check for DarkGate domains
+            for domain in self.darkgate_iocs['domains']:
+                if domain in content:
+                    self.results['darkgate_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 15
+            
+            # Check for Anubis domains
+            for domain in self.anubis_iocs['domains']:
+                if domain in content:
+                    self.results['anubis_indicators'].append({
+                        'type': 'network_connection',
+                        'indicator': domain,
+                        'file': str(log_path),
+                        'severity': 'critical'
+                    })
+                    self.results['risk_score'] += 15
+                    
         except Exception as e:
             print(f"[-] Error analyzing {log_path}: {e}")
 
@@ -162,6 +357,7 @@ class AdvancedSpywareDetector:
             
             for row in cursor.fetchall():
                 file_id, domain, rel_path = row
+                # Check for Predator processes
                 if any(proc in rel_path for proc in self.predator_iocs['processes']):
                     self.results['predator_indicators'].append({
                         'type': 'suspicious_process',
@@ -170,6 +366,84 @@ class AdvancedSpywareDetector:
                         'severity': 'medium'
                     })
                     self.results['risk_score'] += 5
+                
+                # Check for Pegasus processes and bundle IDs
+                if any(proc in rel_path for proc in self.pegasus_iocs['processes']):
+                    self.results['pegasus_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                if any(bundle_id in rel_path for bundle_id in self.pegasus_iocs['bundle_ids']):
+                    self.results['pegasus_indicators'].append({
+                        'type': 'suspicious_bundle_id',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                # Check for NJRat processes
+                if any(proc in rel_path for proc in self.njrat_iocs['processes']):
+                    self.results['njrat_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                # Check for Remcos processes
+                if any(proc in rel_path for proc in self.remcos_iocs['processes']):
+                    self.results['remcos_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                # Check for AsyncRAT processes
+                if any(proc in rel_path for proc in self.asyncrat_iocs['processes']):
+                    self.results['asyncrat_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                # Check for DarkGate processes
+                if any(proc in rel_path for proc in self.darkgate_iocs['processes']):
+                    self.results['darkgate_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                # Check for Anubis processes and bundle IDs
+                if any(proc in rel_path for proc in self.anubis_iocs['processes']):
+                    self.results['anubis_indicators'].append({
+                        'type': 'suspicious_process',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
+                
+                if any(bundle_id in rel_path for bundle_id in self.anubis_iocs['bundle_ids']):
+                    self.results['anubis_indicators'].append({
+                        'type': 'suspicious_bundle_id',
+                        'indicator': rel_path,
+                        'domain': domain,
+                        'severity': 'high'
+                    })
+                    self.results['risk_score'] += 10
                     
             conn.close()
             
@@ -207,7 +481,7 @@ class AdvancedSpywareDetector:
         backup_path = Path(self.backup_path)
         
         # Look for suspicious file patterns
-        suspicious_extensions = ['.dylib', '.framework', '.bundle']
+        suspicious_extensions = ['.dylib', '.framework', '.bundle', '.exe', '.dll']
         
         for file_path in backup_path.rglob('*'):
             if file_path.is_file():
@@ -217,6 +491,60 @@ class AdvancedSpywareDetector:
                     
                     if file_hash in self.predator_iocs['file_hashes']:
                         self.results['predator_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.pegasus_iocs['file_hashes']:
+                        self.results['pegasus_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.njrat_iocs['file_hashes']:
+                        self.results['njrat_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.remcos_iocs['file_hashes']:
+                        self.results['remcos_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.asyncrat_iocs['file_hashes']:
+                        self.results['asyncrat_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.darkgate_iocs['file_hashes']:
+                        self.results['darkgate_indicators'].append({
+                            'type': 'malicious_file',
+                            'indicator': file_hash,
+                            'file': str(file_path),
+                            'severity': 'critical'
+                        })
+                        self.results['risk_score'] += 20
+                    
+                    if file_hash in self.anubis_iocs['file_hashes']:
+                        self.results['anubis_indicators'].append({
                             'type': 'malicious_file',
                             'indicator': file_hash,
                             'file': str(file_path),
@@ -313,6 +641,78 @@ class AdvancedSpywareDetector:
         print("  Processes:")
         for process in self.graphite_iocs['processes']:
             print(f"    • {process}")
+            
+        print("\n🔴 PEGASUS SPYWARE IOCs:")
+        print("  Domains:")
+        for domain in self.pegasus_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.pegasus_iocs['processes']:
+            print(f"    • {process}")
+        print("  Bundle IDs:")
+        for bundle_id in self.pegasus_iocs['bundle_ids']:
+            print(f"    • {bundle_id}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.pegasus_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
+            
+        print("\n🔴 NJRAT IOCs:")
+        print("  Domains:")
+        for domain in self.njrat_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.njrat_iocs['processes']:
+            print(f"    • {process}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.njrat_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
+            
+        print("\n🔴 REMCOS IOCs:")
+        print("  Domains:")
+        for domain in self.remcos_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.remcos_iocs['processes']:
+            print(f"    • {process}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.remcos_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
+            
+        print("\n🔴 ASYNCRAT IOCs:")
+        print("  Domains:")
+        for domain in self.asyncrat_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.asyncrat_iocs['processes']:
+            print(f"    • {process}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.asyncrat_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
+            
+        print("\n🔴 DARKGATE RAT IOCs:")
+        print("  Domains:")
+        for domain in self.darkgate_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.darkgate_iocs['processes']:
+            print(f"    • {process}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.darkgate_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
+            
+        print("\n🔴 ANUBIS IOCs:")
+        print("  Domains:")
+        for domain in self.anubis_iocs['domains']:
+            print(f"    • {domain}")
+        print("  Suspicious Processes:")
+        for process in self.anubis_iocs['processes']:
+            print(f"    • {process}")
+        print("  Bundle IDs:")
+        for bundle_id in self.anubis_iocs['bundle_ids']:
+            print(f"    • {bundle_id}")
+        print("  File Hashes (SHA-256):")
+        for hash_val in self.anubis_iocs['file_hashes']:
+            print(f"    • {hash_val[:16]}...")
         
         print("\n🔵 GENERIC SPYWARE PATTERNS:")
         print("  • Long random strings in process names (32+ chars)")
@@ -387,6 +787,54 @@ class AdvancedSpywareDetector:
                 print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
         else:
             print(f"\n✅ GRAPHITE SPYWARE: No indicators found")
+            
+        # Pegasus indicators
+        if self.results['pegasus_indicators']:
+            print(f"\n🚨 PEGASUS SPYWARE INDICATORS: {len(self.results['pegasus_indicators'])}")
+            for indicator in self.results['pegasus_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ PEGASUS SPYWARE: No indicators found")
+            
+        # NJRat indicators
+        if self.results['njrat_indicators']:
+            print(f"\n🚨 NJRAT INDICATORS: {len(self.results['njrat_indicators'])}")
+            for indicator in self.results['njrat_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ NJRAT: No indicators found")
+            
+        # Remcos indicators
+        if self.results['remcos_indicators']:
+            print(f"\n🚨 REMCOS INDICATORS: {len(self.results['remcos_indicators'])}")
+            for indicator in self.results['remcos_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ REMCOS: No indicators found")
+            
+        # AsyncRAT indicators
+        if self.results['asyncrat_indicators']:
+            print(f"\n🚨 ASYNCRAT INDICATORS: {len(self.results['asyncrat_indicators'])}")
+            for indicator in self.results['asyncrat_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ ASYNCRAT: No indicators found")
+            
+        # DarkGate indicators
+        if self.results['darkgate_indicators']:
+            print(f"\n🚨 DARKGATE RAT INDICATORS: {len(self.results['darkgate_indicators'])}")
+            for indicator in self.results['darkgate_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ DARKGATE RAT: No indicators found")
+            
+        # Anubis indicators
+        if self.results['anubis_indicators']:
+            print(f"\n🚨 ANUBIS INDICATORS: {len(self.results['anubis_indicators'])}")
+            for indicator in self.results['anubis_indicators']:
+                print(f"  • {indicator['type']}: {indicator['indicator']} (Severity: {indicator['severity']})")
+        else:
+            print(f"\n✅ ANUBIS: No indicators found")
         
         # Generic indicators
         if self.results['generic_indicators']:

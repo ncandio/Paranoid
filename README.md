@@ -7,12 +7,18 @@
 
 An automated detection script for advanced spyware including Predator, Graphite, and other commercial surveillance tools targeting iOS devices.
 
-**Note:** This is an alpha version that will be expanded to detect other common spyware such as Pegasus and others. This tool is built just for fun and from experience of being frustrated by the number of tools needed to scan an iPhone. Works well with iMazing. Your paranoia will finally be satisfied. This version is explicitly designed for Windows 10/11.
+**Note:** This tool is built just for fun and from experience of being frustrated by the number of tools needed to scan an iPhone. Works well with iMazing. Your paranoia will finally be satisfied. This version is explicitly designed for Windows 10/11.
 
 ## 🎯 What This Tool Detects
 
 - **Predator Spyware**: Commercial spyware sold to governments and law enforcement
 - **Graphite Spyware**: Advanced persistent threat targeting mobile devices
+- **Pegasus Spyware**: Sophisticated zero-click surveillance tool by NSO Group
+- **NJRat**: Remote access trojan primarily targeting Windows systems
+- **Remcos**: Remote control and surveillance software often used maliciously
+- **AsyncRAT**: Remote administration tool frequently used in malware campaigns
+- **DarkGate RAT**: Multi-functional remote access trojan with advanced capabilities
+- **Anubis**: Banking trojan and keylogger targeting mobile devices
 - **Generic Spyware**: Other surveillance tools and malicious software
 - **System Compromises**: Jailbreaks, unauthorized profiles, suspicious processes
 
