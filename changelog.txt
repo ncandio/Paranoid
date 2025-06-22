@@ -1,0 +1,16 @@
+ 2. Enhanced Core Scripts:
+    - Added additional command-line options to spyware_detector.py
+    - Added output control options (--quiet, --json-only)
+    - Added informational displays (--version, --prerequisites, etc.)
+    - Renamed PegasusDetector to AdvancedPegasusDetector for consistency
+    - Updated the command-line interface for both main tools
+  3. Added Utilities:
+    - Created a requirements.txt file for easier dependency installation
+    - Added a Windows batch file for easy execution (run_scanner.bat)
+    - Added a shell script for macOS/Linux users (run_scanner.sh)
+    - Improved image resizing with HTML-based approach
+  4. General Improvements:
+    - More professional presentation
+    - Better organization of documentation
+    - More detailed command-line help
+    - Easier to use interface for non-technical users
