@@ -1,0 +1,4 @@
+plistlib>=2.0.0
+sqlite3>=2.6.0
+pathlib>=1.0.0
+pillow>=9.0.0

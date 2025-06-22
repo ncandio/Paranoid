@@ -878,23 +878,83 @@ class AdvancedSpywareDetector:
 def main():
     """Main execution function"""
     import argparse
+    import sys
+    import os
     
     parser = argparse.ArgumentParser(description='Advanced Spyware Detection for iOS')
     parser.add_argument('--backup', help='Path to iTunes backup directory')
     parser.add_argument('--diagnostic', help='Path to diagnostic files')
+    parser.add_argument('--report', help='Custom path for report output')
+    parser.add_argument('--quiet', action='store_true', help='Suppress console output (results still saved to file)')
+    parser.add_argument('--json-only', action='store_true', help='Output only JSON data (for programmatic use)')
+    parser.add_argument('--version', action='store_true', help='Display version information')
+    parser.add_argument('--prerequisites', action='store_true', help='Display prerequisites and requirements')
+    parser.add_argument('--ioc-database', action='store_true', help='Display IOC database')
+    parser.add_argument('--risk-map', action='store_true', help='Display risk assessment matrix')
     
     args = parser.parse_args()
     
-    if not args.backup and not args.diagnostic:
-        print("Error: Please provide either --backup or --diagnostic path")
+    # Version information
+    if args.version:
+        print("Paranoid - Advanced iOS Spyware Detection Tool")
+        print("Version: 1.1.0")
+        print("Last Updated: June 2024")
+        print("Supports: iOS 12.0 - 17.x")
         return
     
+    # Create detector instance
     detector = AdvancedSpywareDetector(
         backup_path=args.backup,
         diagnostic_path=args.diagnostic
     )
     
-    detector.run_full_scan()
+    # Display prerequisites only
+    if args.prerequisites:
+        detector.print_prerequisites()
+        return
+        
+    # Display IOC database only
+    if args.ioc_database:
+        detector.print_ioc_database()
+        return
+        
+    # Display risk map only
+    if args.risk_map:
+        detector.print_risk_map()
+        return
+    
+    # Full scan mode requires at least one data source
+    if not args.backup and not args.diagnostic:
+        print("Error: Please provide either --backup or --diagnostic path")
+        parser.print_help()
+        return
+    
+    # Setup custom report path if specified
+    report_path = args.report if args.report else 'spyware_detection_report.json'
+    
+    # Configure quiet mode
+    if args.quiet:
+        # Redirect stdout to null
+        sys.stdout = open(os.devnull, 'w')
+    
+    # Run the scan
+    results = detector.run_full_scan()
+    
+    # Restore stdout if needed
+    if args.quiet:
+        sys.stdout = sys.__stdout__
+    
+    # Save results to specified path
+    with open(report_path, 'w') as f:
+        json.dump(results, f, indent=2)
+    
+    # Print path to report file
+    if not args.quiet:
+        print(f"\n📄 Detailed report saved to: {report_path}")
+        
+    # For JSON-only mode, just print the JSON to stdout (useful for piping)
+    if args.json_only:
+        print(json.dumps(results, indent=2))
 
 if __name__ == "__main__":
     main()

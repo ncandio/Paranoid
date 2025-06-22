@@ -1,261 +1,181 @@
 # Paranoid
-# iOS Advanced Spyware Detection Tool for Windows
 
-![Paranoid - iOS Spyware Detector](./images/paranoid_logo.png)
+## Advanced iOS Spyware Detection Toolkit for Windows
 
-**⚠️ IMPORTANT: This tool is specifically designed for iOS devices only. It does not work with Android devices.**
+![Paranoid - iOS Spyware Detector](./images/paranoid_logo_small.png)
 
-An automated detection script for advanced spyware including Predator, Graphite, and other commercial surveillance tools targeting iOS devices.
+**⚠️ IMPORTANT: This tool is designed specifically for iOS devices and does not support Android.**
 
-**Note:** This tool is built just for fun and from experience of being frustrated by the number of tools needed to scan an iPhone. Works well with iMazing. Your paranoia will finally be satisfied. This version is explicitly designed for Windows 10/11.
+Paranoid is a comprehensive security toolkit that automatically detects advanced spyware including Predator, Graphite, Pegasus, and other commercial surveillance tools targeting iOS devices. Built for forensic analysis of iOS backups, Paranoid helps you verify if your device has been compromised.
 
-## 🎯 What This Tool Detects
+## 🔍 Detection Capabilities
 
-- **Predator Spyware**: Commercial spyware sold to governments and law enforcement
-- **Graphite Spyware**: Advanced persistent threat targeting mobile devices
-- **Pegasus Spyware**: Sophisticated zero-click surveillance tool by NSO Group
-- **NJRat**: Remote access trojan primarily targeting Windows systems
-- **Remcos**: Remote control and surveillance software often used maliciously
-- **AsyncRAT**: Remote administration tool frequently used in malware campaigns
-- **DarkGate RAT**: Multi-functional remote access trojan with advanced capabilities
-- **Anubis**: Banking trojan and keylogger targeting mobile devices
-- **Generic Spyware**: Other surveillance tools and malicious software
-- **System Compromises**: Jailbreaks, unauthorized profiles, suspicious processes
+Paranoid is engineered to detect the following threats:
 
-## 📋 Windows Prerequisites
+### Commercial Surveillance Tools
+- **Predator Spyware**: Advanced commercial surveillance tool sold to government entities
+- **Graphite Spyware**: Sophisticated persistent threat targeting iOS devices
+- **Pegasus Spyware**: NSO Group's zero-click surveillance platform
+
+### Remote Access Trojans (RATs)
+- **NJRat**: Remote access trojan with advanced persistence capabilities
+- **Remcos**: Sophisticated remote control and surveillance software
+- **AsyncRAT**: Stealthy remote administration tool used in targeted attacks
+- **DarkGate RAT**: Multi-functional remote access trojan with evasion capabilities
+
+### Mobile Banking Threats
+- **Anubis**: Advanced banking trojan and keylogger targeting mobile devices
+
+### System Compromise Indicators
+- **Jailbreak Artifacts**: Detection of system-level modifications
+- **Unauthorized Profiles**: Identification of potentially malicious configuration profiles
+- **Suspicious Processes**: Detection of unusual background processes
+- **Network Anomalies**: Identification of communications with known C2 servers
+
+## 🛠️ Technical Features
+
+- **Complete File System Analysis**: Scans iTunes backup files for malicious artifacts
+- **Network Traffic Examination**: Identifies connections to known C2 domains
+- **Process Analysis**: Detects suspicious processes and services
+- **Configuration Profile Verification**: Identifies unauthorized MDM profiles
+- **Hash-Based Detection**: Compares file hashes against known malicious signatures
+- **Forensic Reporting**: Generates comprehensive JSON reports for further analysis
+
+## 📋 System Requirements
 
 ### Hardware Requirements
-- **USB Cable**: Original Apple Lightning/USB-C cable (third-party cables may not work reliably)
-- **Storage**: Minimum 10GB free disk space for backups and analysis
-- **RAM**: At least 4GB RAM recommended
-- **Processor**: Any modern Windows PC (Windows 10/11 recommended)
+- **Processor**: Any modern x86/x64 CPU (2GHz+ recommended)
+- **RAM**: Minimum 4GB (8GB+ recommended)
+- **Storage**: 10GB+ free space for backup analysis
+- **Connectivity**: USB port with original Apple cable
 
-### Software Installation (Step by Step)
+### Software Prerequisites
+- **Operating System**: Windows 10/11 (64-bit recommended)
+- **Python**: Version 3.7 or higher
+- **iTunes**: Latest version with Apple Mobile Device Support
+- **Visual C++ Redistributable**: 2015+ Runtime
 
-#### 1. Install Python 3.7+
-```
-1. Download Python from: https://www.python.org/downloads/windows/
-2. Download the latest Python 3.x version (3.11+ recommended)
-3. During installation, CHECK "Add Python to PATH" option
-4. Click "Install Now"
-5. Verify installation: Open Command Prompt and type: python --version
-```
+## 🚀 Installation
 
-#### 2. Install iTunes (Required for iOS Backups)
-```
-Option A - Microsoft Store (Recommended):
-1. Open Microsoft Store
-2. Search for "iTunes"
-3. Install iTunes from Apple Inc.
+### Automated Installation
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/paranoid.git
+cd paranoid
 
-Option B - Apple Website:
-1. Go to: https://www.apple.com/itunes/download/
-2. Download iTunes for Windows
-3. Install following the setup wizard
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-#### 3. Download the Detection Script
-```
-1. Download the spyware_detector.py file
-2. Save it to a folder like: C:\SpywareDetection\
-3. Open Command Prompt as Administrator
-4. Navigate to the folder: cd C:\SpywareDetection\
-```
+### Manual Setup
+1. **Install Python 3.7+**
+   - Download from [python.org](https://www.python.org/downloads/windows/)
+   - Check "Add Python to PATH" during installation
 
-## 📱 iOS Device Preparation
+2. **Install iTunes**
+   - Download from [Apple's website](https://www.apple.com/itunes/download/)
+   - Ensure "Apple Mobile Device Support" is installed
 
-### Supported Devices
-- **iPhone**: All models with iOS 12.0 or later
-- **iPad**: All models with iPadOS 13.0 or later
-- **iPod Touch**: 7th generation with iOS 12.0 or later
+3. **Download Paranoid**
+   - Download the latest release from our repository
+   - Extract to a folder (e.g., `C:\Paranoid`)
 
-### Device Setup Steps
-1. **Connect iPhone to PC** using original Apple cable
-2. **Trust the Computer**:
-   - When prompted on iPhone, tap "Trust"
-   - Enter your iPhone passcode
-3. **Enable Backup Encryption** (Critical for full analysis):
-   - Open iTunes
-   - Select your device
-   - Check "Encrypt local backup"
-   - Set a backup password (remember this!)
-4. **Put Device in Airplane Mode** (recommended during analysis)
-
-## 🔧 Creating iTunes Backup
-
-### Method 1: Using iTunes
-```
-1. Open iTunes
-2. Connect iPhone with cable
-3. Click on iPhone icon in iTunes
-4. Under "Backups" section:
-   - Select "This computer"
-   - Check "Encrypt local backup"
-   - Click "Back Up Now"
-5. Wait for backup completion (10-30 minutes)
-```
-
-### Method 2: Using Command Line
-```
-# Open Command Prompt as Administrator
-cd "%APPDATA%\Apple Computer\MobileSync\Backup"
-dir
-# Note the folder name (this is your backup ID)
-```
-
-## 🚀 Running the Analysis
+## 📱 Usage Guide
 
 ### Basic Usage
 ```bash
-# Navigate to script folder
-cd C:\SpywareDetection\
-
-# Run analysis on iTunes backup
+# Run analysis on an iTunes backup
 python spyware_detector.py --backup "%APPDATA%\Apple Computer\MobileSync\Backup\[BACKUP-ID]"
 
-# Example with actual backup ID
-python spyware_detector.py --backup "%APPDATA%\Apple Computer\MobileSync\Backup\12345678-90ab-cdef-1234-567890abcdef"
+# Advanced analysis with diagnostic logs
+python spyware_detector.py --backup "[BACKUP-PATH]" --diagnostic "[DIAGNOSTIC-PATH]"
 ```
 
-### Finding Your Backup Location
+### Creating an iTunes Backup
+1. Connect your iPhone to your computer
+2. Open iTunes and select your device
+3. Choose "Back up to this computer"
+4. Enable "Encrypt local backup" for full access
+5. Click "Back Up Now" and wait for completion
+
+### Locating Your Backup
 ```bash
 # List all backups
 dir "%APPDATA%\Apple Computer\MobileSync\Backup"
-
-# Each folder represents one device backup
-# Use the most recent folder for your target device
-```
-
-### Advanced Usage with Diagnostic Files
-```bash
-# If you have diagnostic files from iPhone
-python spyware_detector.py --backup "[BACKUP-PATH]" --diagnostic "[DIAGNOSTIC-PATH]"
 ```
 
 ## 📊 Understanding Results
 
-### Risk Levels
-- **🔴 CRITICAL (20+ points)**: Device likely compromised, immediate action required
-- **🟠 HIGH (10-19 points)**: Suspicious activity detected, investigate further
-- **🟡 MEDIUM (5-9 points)**: Minor indicators, monitor device
-- **🟢 LOW (0-4 points)**: Clean device, no threats detected
+### Risk Assessment Scale
+- **🔴 CRITICAL (20+ points)**: Device is likely compromised
+- **🟠 HIGH (10-19 points)**: Suspicious indicators detected
+- **🟡 MEDIUM (5-9 points)**: Minor anomalies present
+- **🟢 LOW (0-4 points)**: No significant threats detected
 
-### Output Files
-- **Console Output**: Real-time analysis results
-- **spyware_detection_report.json**: Detailed technical report
-- **Backup Files**: Preserved in original location
+### Detection Methodology
+- **IOC Matching**: Comparison against known Indicators of Compromise
+- **Behavioral Analysis**: Identification of abnormal system behavior
+- **Heuristic Scanning**: Detection of suspicious patterns
+- **Forensic Analysis**: In-depth examination of system artifacts
 
-## 🔍 What the Tool Analyzes
+## 🔒 Security Considerations
 
-### Data Sources
-- **iTunes Backup Files**: Complete device backup
-- **System Logs**: iOS system and application logs
-- **Network Connections**: Suspicious domain communications
-- **Process Lists**: Running applications and services
-- **Configuration Profiles**: Device management profiles
-- **File Hashes**: Known malicious file signatures
+### Data Protection
+- **Local Analysis**: All scanning is performed locally on your computer
+- **No Data Transmission**: No data is sent to external servers
+- **Secure Reporting**: Reports are saved locally with optional encryption
 
-### Detection Methods
-- **IOC Matching**: Known Indicators of Compromise
-- **Behavioral Analysis**: Suspicious system behavior
-- **Network Analysis**: Malicious domain detection
-- **File System Analysis**: Unauthorized file modifications
+### Legal Compliance
+- **Authorization Required**: Only scan devices you own or have explicit permission to analyze
+- **Corporate Policy**: Business devices may require IT department approval
+- **Privacy Laws**: Respect applicable privacy and data protection regulations
 
-## ⚠️ Legal and Ethical Considerations
+## 🧰 Advanced Features
 
-### Legal Requirements
-- **Only analyze devices you own or have explicit written permission to analyze**
-- **Corporate devices require IT department authorization**
-- **Law enforcement use requires proper legal authority**
-- **Unauthorized analysis may violate privacy laws**
+### Focused Spyware Detection
+For targeted Pegasus spyware detection only:
+```bash
+python AdvancedSpywareDetector.py --backup "[BACKUP-PATH]"
+```
 
-### Best Practices
-- **Isolate device during analysis** (airplane mode)
-- **Create forensic backup copy** before analysis
-- **Document all findings** for potential legal proceedings
-- **Secure storage** of backup files (encrypted)
+### Command Line Options
+```
+--backup        Path to iTunes backup directory
+--diagnostic    Path to iOS diagnostic files
+--report        Custom path for report output
+--quiet         Suppress console output (results still saved to file)
+--json-only     Output only JSON data (for programmatic use)
+```
 
-## 🛠️ Troubleshooting
+## 📚 Troubleshooting
 
 ### Common Issues
 
-#### "Python is not recognized"
+#### Backup Access Problems
 ```
-Solution: Reinstall Python and check "Add Python to PATH"
-Verify: python --version in Command Prompt
-```
-
-#### "iTunes not detecting device"
-```
-Solutions:
-1. Try different USB port
-2. Use original Apple cable
-3. Restart iTunes and iPhone
-4. Update iTunes to latest version
-5. Install Apple Mobile Device Support
+- Ensure iTunes is closed during analysis
+- Check backup encryption password is correct
+- Verify backup location exists
 ```
 
-#### "Backup failed" or "Backup corrupted"
+#### Python Errors
 ```
-Solutions:
-1. Ensure sufficient disk space (10GB+)
-2. Try without backup encryption first
-3. Reset iPhone trust settings
-4. Update iTunes and iOS
+- Verify Python 3.7+ is installed: python --version
+- Check all dependencies are installed: pip install -r requirements.txt
+- Run as Administrator if needed for full system access
 ```
 
-#### "Access denied" errors
-```
-Solutions:
-1. Run Command Prompt as Administrator
-2. Check backup folder permissions
-3. Disable antivirus temporarily
-4. Ensure iTunes is closed during analysis
-```
+## 🛡️ Disclaimer
 
-### System Requirements Issues
-```
-Minimum Requirements:
-- Windows 10/11 (64-bit recommended)
-- 4GB RAM minimum, 8GB recommended
-- 20GB free disk space
-- USB 2.0 or higher port
-```
-
-## 📞 Support and Updates
-
-### Getting Help
-- **Check this README first** for common solutions
-- **Verify all prerequisites** are properly installed
-- **Test with a clean iTunes backup** first
-- **Document error messages** for troubleshooting
-
-### Updating IOCs
-The tool uses built-in IOC databases, but you can update them by:
-1. Downloading latest threat intelligence
-2. Updating the IOC lists in the script
-3. Adding new domains, hashes, or process names
-
-### Version Information
-- **Current Version**: Alpha 1.0
-- **iOS Compatibility**: iOS 12.0 - iOS 17.x
-- **Windows Compatibility**: Windows 10/11
-- **Python Requirement**: 3.7+
-
-## 🔒 Privacy and Security
-
-### Data Handling
-- **All analysis is performed locally** on your PC
-- **No data is sent to external servers**
-- **Backup files remain on your system**
-- **Reports are saved locally only**
-
-### Secure Practices
-- **Encrypt backup files** with strong passwords
-- **Store backups securely** (encrypted drive)
-- **Delete temporary files** after analysis
-- **Use offline analysis** when possible
+This tool is for legitimate security analysis only. Users are responsible for ensuring they have proper authorization before analyzing any device. Unauthorized access to devices may violate applicable laws.
 
 ---
 
-**⚠️ DISCLAIMER**: This tool is for authorized security analysis only. Users are responsible for ensuring they have proper authorization before analyzing any device. Unauthorized access to devices may violate local, state, and federal laws.
+## 📞 Support and Updates
+
+- **GitHub**: [Report issues](https://github.com/yourusername/paranoid/issues)
+- **Documentation**: [Full documentation](https://github.com/yourusername/paranoid/wiki)
+- **Updates**: Check for new IOC databases monthly
+
+**Version**: 1.1.0
+**Last Updated**: June 2024
